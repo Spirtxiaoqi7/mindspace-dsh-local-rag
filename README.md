@@ -78,6 +78,10 @@ Initial model retrieval needs only `query` and `scope`; a returned `documentId` 
 
 ## Settings
 
+<p align="center">
+  <img src="assets/local-rag-knowledge-library.png" alt="Built-in Local RAG knowledge upload and retrieval entry" width="960">
+</p>
+
 The settings page provides:
 
 - model catalog, selection, download/cancel, explicit start/stop, and next-boot auto-start;

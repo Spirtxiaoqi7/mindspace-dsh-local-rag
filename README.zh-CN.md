@@ -79,6 +79,10 @@ pnpm dsh web
 
 ## 设置页能力
 
+<p align="center">
+  <img src="assets/local-rag-knowledge-library.png" alt="本地 RAG 的内置知识库上传与检索入口" width="960">
+</p>
+
 - 模型目录、选择、下载/取消、显式启动/停止和下次自动启动；
 - 索引健康度、统计和手动重建；
 - 多文件分块上传、纯文本导入，以及双库正文的查看、编辑、逻辑删除和版本回滚；
