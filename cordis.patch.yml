@@ -1,0 +1,12 @@
+- insert:
+    - id: mindspace-local-rag
+      name: mindspace-dsh-local-rag
+      config:
+        enabled: true
+        vectorCandidates: 5
+        lexicalCandidates: 5
+        resultLimit: 5
+        timeoutMs: 15000
+        # The model still defaults to stopped. This only permits the user's
+        # persisted "start automatically next time" choice to take effect.
+        autoStart: true
