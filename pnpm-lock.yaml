@@ -17,6 +17,9 @@ importers:
       mammoth:
         specifier: ^1.12.1
         version: 1.12.1
+      onnxruntime-node:
+        specifier: 1.24.3
+        version: 1.24.3
       pdfjs-dist:
         specifier: ^6.2.108
         version: 6.2.108

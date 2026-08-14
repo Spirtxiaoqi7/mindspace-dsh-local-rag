@@ -25,7 +25,7 @@ This repository is **not coupled to** [`mindspace-dsh-session-memory`](https://g
 | Persistence | `<DSH_HOME>/mindspace-local-rag/` | Its own independent data store |
 | Dependency | Does not depend on structured memory | Does not depend on Local RAG |
 
-They can be installed and removed independently. A DSH profile may mount both bundles side by side, but removing either one does not prevent the other from starting. Conversation summaries in this RAG come directly from native DSH compaction events; they are not read from the structured-memory plugin.
+Local RAG can be installed or removed independently, but a profile must enable **exactly one** structured-memory implementation that provides the `sessionMemory` service. When an integrated DSH checkout already bundles V2 memory, do not also mount the legacy `mindspace-dsh-session-memory` package: the duplicate service registration fails during cold start. Conversation summaries in this RAG come directly from native DSH compaction events; they are not read from the structured-memory plugin.
 
 ## What it contributes
 
@@ -39,6 +39,7 @@ They can be installed and removed independently. A DSH profile may mount both bu
 - Governed dual corpora: uploaded knowledge bodies and current-session compaction summaries are visible, editable, logically deletable, and restorable through immutable revisions.
 - Stable source follow-up: both the model and user receive a safe `local-rag://source/...` address; the model can filter a second search by source/document or page through bounded extracted text without receiving a filesystem path.
 - Explicit model lifecycle: ModelScope is tried first, then Hugging Face; download, integrity verification, start/stop, and persisted auto-start are separate operations. ONNX is not loaded at default boot.
+- Runtime preflight: the Node ONNX runtime is a direct dependency and post-install verification checks ONNX, PDF, and DOCX support. A partial installation fails explicitly instead of presenting a downloaded model that cannot start.
 - Graceful degradation: vector and BM25+ lanes run independently; lexical results remain available when the vector runtime is stopped, stale, slow, or unavailable.
 - Provider-neutral host integration: no chat-provider patch and no automatic prompt stuffing.
 - Local persistence under the active DSH home. Retrieved text is explicitly treated as untrusted reference material, never as instructions.
@@ -50,11 +51,11 @@ Requirements: Node.js 22.19+ (or 24+), pnpm, and a local DeepSeek Harness checko
 ```powershell
 pnpm install
 pnpm run check
-pnpm dsh plugin --profile web add A:\path\to\mindspace-dsh-local-rag\dist\mindspace-dsh-local-rag-0.3.2.tgz
+pnpm dsh plugin --profile web add A:\path\to\mindspace-dsh-local-rag\dist\mindspace-dsh-local-rag-0.3.3.tgz
 pnpm dsh web
 ```
 
-Open **Settings → Local RAG**. Files can be uploaded and searched lexically before an embedding model is running. The built-in verified model is `shibing624/text2vec-base-chinese` (ONNX, 768 dimensions, approximately 407 MB); the catalog is extensible but does not advertise unverified downloads.
+Open **Settings → Local RAG**. Files can be uploaded and searched lexically before an embedding model is running. The first plugin install also obtains the Node ONNX native runtime; this is the model runtime, and it is not loaded during DSH cold start. The built-in verified model is `shibing624/text2vec-base-chinese` (ONNX, 768 dimensions, approximately 407 MB); the catalog is extensible but does not advertise unverified downloads.
 
 The plugin stores its model and index beneath:
 
@@ -105,6 +106,6 @@ The suite covers real PDF/DOCX parsing, TSV provenance, deterministic RRF, scope
 
 ## Status
 
-`0.3.2` is the governed dual-corpus release. It intentionally avoids reranking and user-configurable Top-K until retrieval quality has been measured with real files, compaction summaries, and revision workflows.
+`0.3.3` is the startup-reliability fix for the governed dual-corpus release. It intentionally avoids reranking and user-configurable Top-K until retrieval quality has been measured with real files, compaction summaries, and revision workflows.
 
 MIT licensed.
