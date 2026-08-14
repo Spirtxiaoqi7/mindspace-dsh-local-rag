@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.3 - 2026-08-14
+
+- Declared `onnxruntime-node` as a direct runtime dependency and added post-install preflight checks for ONNX, PDF, and DOCX support.
+- Kept the DSH Host alive while surfacing the precise ONNX startup failure in settings instead of returning a generic failed health probe.
+- Documented the single structured-memory service rule so an integrated V2 memory bundle and the legacy external bundle cannot be mounted together by mistake.
+
 ## 0.3.2 - 2026-08-14
 
 - Preserved per-parent page, paragraph, and row ranges after short-unit aggregation instead of assigning the whole document range to every result.

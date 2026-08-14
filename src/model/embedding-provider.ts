@@ -54,8 +54,12 @@ export class TransformersJsLocalEmbeddingProvider implements EmbeddingProvider {
     try {
       await this.getPipeline()
       return true
-    } catch {
-      return false
+    } catch (error) {
+      // Do not collapse a missing native runtime into a generic false. The
+      // lifecycle stores this message for the settings page while keeping the
+      // DSH host alive, so a partial package install is repairable in place.
+      const detail = error instanceof Error ? error.message : String(error)
+      throw new ModelNotReadyError(this.modelId, `local ONNX runtime preflight failed: ${detail}`)
     }
   }
 

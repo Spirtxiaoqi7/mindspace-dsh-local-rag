@@ -25,7 +25,7 @@
 | 数据目录 | `<DSH_HOME>/mindspace-local-rag/` | 结构化记忆插件自己的存储目录 |
 | 依赖关系 | 不依赖结构化记忆插件 | 不依赖本 RAG 插件 |
 
-两者可以独立安装和卸载。当前本机只是通过 DSH profile 把两个 bundle **并列挂载**；任意一个被移除，另一个仍能单独启动和运行。RAG 中的会话摘要来自 DSH 原生压缩事件，不读取结构化记忆插件的数据。
+RAG 可以独立安装和卸载；但一个 profile **只能启用一套**提供 `sessionMemory` 服务的结构化记忆实现。当前集成式 DSH 已内置 V2 记忆时，不要再额外挂载旧的 `mindspace-dsh-session-memory` 包，否则会因重复注册 `sessionMemory` 而在冷启动阶段失败。RAG 中的会话摘要来自 DSH 原生压缩事件，不读取结构化记忆插件的数据。
 
 ## 本次贡献
 
@@ -40,6 +40,7 @@
 - 源文件二次取证：检索结果同时给 AI 和用户稳定的 `local-rag://source/...` 地址。AI 可按 `sourceId`/`documentId` 二次检索，或分页读取受限的提取正文；插件不暴露真实磁盘路径。
 - 文件摄取：设置页可分块上传 PDF、DOCX、TSV、CSV、TXT、Markdown、JSON 和 HTML；无需额外安装解析器。
 - 本地模型生命周期：下拉选择已验证型号，优先 ModelScope、失败后回退 Hugging Face；支持断点续传、文件尺寸与 SHA-256 校验。下载不加载 ONNX，用户显式点击启动后才做本地推理探针；是否下次自动启动由用户决定。
+- 启动前检：将 Node ONNX 运行时作为直接依赖，并在安装后验证 ONNX、PDF 与 DOCX 运行时；依赖未完整安装会明确失败，不会留下“模型已下载但无法启动”的假就绪状态。
 - 可用性降级：向量和 BM25+ 并行；向量模型未启动、换模待重建、超时或异常时，词法路仍可先返回并标出 `partial` 与两路状态。
 - 模型供应商无关：不改聊天供应商，不重构 DSH 主链，不做自动 Prompt 注入。
 - 数据保留在当前 DSH Home；召回文本被明确标记为“不可信参考资料”，不能覆盖用户当前指令。
@@ -51,11 +52,11 @@
 ```powershell
 pnpm install
 pnpm run check
-pnpm dsh plugin --profile web add A:\path\to\mindspace-dsh-local-rag\dist\mindspace-dsh-local-rag-0.3.2.tgz
+pnpm dsh plugin --profile web add A:\path\to\mindspace-dsh-local-rag\dist\mindspace-dsh-local-rag-0.3.3.tgz
 pnpm dsh web
 ```
 
-进入 **设置 → 本地 RAG**。可以先上传资料并用 BM25+ 检索；需要语义向量时，再选择模型、下载并显式启动。当前内置经过完整性清单验证的型号为 `shibing624/text2vec-base-chinese`（ONNX、768 维，约 407 MB）。目录是可扩展 catalog，但不会把未经下载/校验/启动验证的型号做成假入口。
+进入 **设置 → 本地 RAG**。可以先上传资料并用 BM25+ 检索；需要语义向量时，再选择模型、下载并显式启动。首次插件安装还会拉取一次 Node ONNX 原生运行时；这是模型运行环境，不会在 DSH 冷启动时加载。当前内置经过完整性清单验证的型号为 `shibing624/text2vec-base-chinese`（ONNX、768 维，约 407 MB）。目录是可扩展 catalog，但不会把未经下载/校验/启动验证的型号做成假入口。
 
 模型和索引默认写入：
 
@@ -105,6 +106,6 @@ pnpm pack --pack-destination dist
 
 ## 当前阶段
 
-`0.3.2` 是第三阶段可治理双资料库版本。当前刻意不加入重排序模型，也不开放 Top-K；先用真实文件、真实压缩摘要、版本治理和可观测的 lane 状态评估召回质量。
+`0.3.3` 是可治理双资料库的启动可靠性修复版本。当前刻意不加入重排序模型，也不开放 Top-K；先用真实文件、真实压缩摘要、版本治理和可观测的 lane 状态评估召回质量。
 
 MIT License。
