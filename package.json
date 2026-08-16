@@ -1,6 +1,6 @@
 {
   "name": "mindspace-dsh-local-rag",
-  "version": "0.3.3",
+  "version": "0.3.5",
   "description": "Local, model-invoked hybrid RAG for DeepSeek Harness",
   "type": "module",
   "license": "MIT",
@@ -31,6 +31,7 @@
   },
   "files": [
     "lib",
+    "scripts/verify-runtime-deps.mjs",
     "cordis.patch.yml",
     "README.md",
     "README.zh-CN.md",
@@ -51,7 +52,6 @@
     }
   },
   "scripts": {
-    "postinstall": "node scripts/verify-runtime-deps.mjs",
     "build": "tsdown && node scripts/normalize-build.mjs",
     "test": "vitest run",
     "check": "pnpm run build && pnpm run test && pnpm pack --pack-destination dist"

@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.5 - 2026-08-16
+
+- Remove the nonessential package `postinstall` preflight so pnpm 11 can
+  install the plugin without separately approving the plugin's own script.
+  Native runtime dependencies remain explicitly approved by the host profile;
+  model and extraction readiness are still checked at runtime.
+
+## 0.3.4 - 2026-08-16
+
+- Include the declared RAG post-install runtime preflight in the published
+  tarball, so a clean DSH Web profile can install instead of failing with a
+  missing `scripts/verify-runtime-deps.mjs` module.
+
 ## 0.3.3 - 2026-08-14
 
 - Declared `onnxruntime-node` as a direct runtime dependency and added post-install preflight checks for ONNX, PDF, and DOCX support.
