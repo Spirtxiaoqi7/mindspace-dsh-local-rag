@@ -46,14 +46,28 @@ Local RAG can be installed or removed independently, but a profile must enable *
 
 ## Install into a DSH profile
 
-Requirements: Node.js 22.19+ (or 24+), pnpm, and a local DeepSeek Harness checkout.
+This README describes current `main`; it does not present an unpublished version
+number as a Release asset. Requirements: Node.js 22.19+ (or 24+), pnpm, and a
+local DeepSeek Harness checkout. Build a tarball from this repository, then
+install it from the **official Harness checkout root**:
 
 ```powershell
-pnpm install
-pnpm run check
-pnpm dsh plugin --profile web add A:\path\to\mindspace-dsh-local-rag\dist\mindspace-dsh-local-rag-0.3.3.tgz
-pnpm dsh web
+git clone https://github.com/Spirtxiaoqi7/mindspace-dsh-local-rag.git
+Set-Location .\mindspace-dsh-local-rag
+corepack pnpm install
+corepack pnpm run build
+corepack pnpm pack --pack-destination dist
+$ragTgz = (Get-ChildItem .\dist\mindspace-dsh-local-rag-*.tgz | Sort-Object LastWriteTime -Descending | Select-Object -First 1).FullName
+
+Set-Location C:\path\to\deepseek-harness
+corepack pnpm dsh plugin --profile web add $ragTgz
+corepack pnpm dsh --profile web --dump-config
+corepack pnpm dsh web
 ```
+
+Do not run `pnpm dsh` in the plugin directory: it belongs to the official Harness
+checkout. Historic GitHub Releases map only to their respective tags and do not
+represent the current `main` feature set.
 
 Open **Settings → Local RAG**. Files can be uploaded and searched lexically before an embedding model is running. The first plugin install also obtains the Node ONNX native runtime; this is the model runtime, and it is not loaded during DSH cold start. The built-in verified model is `shibing624/text2vec-base-chinese` (ONNX, 768 dimensions, approximately 407 MB); the catalog is extensible but does not advertise unverified downloads.
 
@@ -106,6 +120,9 @@ The suite covers real PDF/DOCX parsing, TSV provenance, deterministic RRF, scope
 
 ## Status
 
-`0.3.3` is the startup-reliability fix for the governed dual-corpus release. It intentionally avoids reranking and user-configurable Top-K until retrieval quality has been measured with real files, compaction summaries, and revision workflows.
+Current `main` has package version `0.3.5`: it includes governed dual corpora,
+startup reliability fixes, and the pnpm 11 no-install-script packaging repair. It
+intentionally avoids reranking and user-configurable Top-K until retrieval quality
+has been measured with real files, compaction summaries, and revision workflows.
 
 MIT licensed.

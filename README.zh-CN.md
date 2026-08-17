@@ -47,14 +47,26 @@ RAG 可以独立安装和卸载；但一个 profile **只能启用一套**提供
 
 ## 安装到现有 DSH 配置
 
-需要 Node.js 22.19+（或 24+）、pnpm，以及本地 DeepSeek Harness 源码。
+本 README 描述 `main` 的当前代码，不将未发布的版本号伪装成 Release 资产。需要
+Node.js 22.19+（或 24+）、pnpm，以及本地 DeepSeek Harness 源码。先拉取并在本仓库
+生成 tarball，再切换到 **官方 Harness checkout 根目录** 安装它：
 
 ```powershell
-pnpm install
-pnpm run check
-pnpm dsh plugin --profile web add A:\path\to\mindspace-dsh-local-rag\dist\mindspace-dsh-local-rag-0.3.3.tgz
-pnpm dsh web
+git clone https://github.com/Spirtxiaoqi7/mindspace-dsh-local-rag.git
+Set-Location .\mindspace-dsh-local-rag
+corepack pnpm install
+corepack pnpm run build
+corepack pnpm pack --pack-destination dist
+$ragTgz = (Get-ChildItem .\dist\mindspace-dsh-local-rag-*.tgz | Sort-Object LastWriteTime -Descending | Select-Object -First 1).FullName
+
+Set-Location C:\path\to\deepseek-harness
+corepack pnpm dsh plugin --profile web add $ragTgz
+corepack pnpm dsh --profile web --dump-config
+corepack pnpm dsh web
 ```
+
+不要在插件目录执行 `pnpm dsh`；该命令属于官方 Harness checkout。历史 GitHub
+Release 仅对应其各自的 tag，不等同于本 README 描述的 `main` 功能。
 
 进入 **设置 → 本地 RAG**。可以先上传资料并用 BM25+ 检索；需要语义向量时，再选择模型、下载并显式启动。首次插件安装还会拉取一次 Node ONNX 原生运行时；这是模型运行环境，不会在 DSH 冷启动时加载。当前内置经过完整性清单验证的型号为 `shibing624/text2vec-base-chinese`（ONNX、768 维，约 407 MB）。目录是可扩展 catalog，但不会把未经下载/校验/启动验证的型号做成假入口。
 
@@ -106,6 +118,8 @@ pnpm pack --pack-destination dist
 
 ## 当前阶段
 
-`0.3.3` 是可治理双资料库的启动可靠性修复版本。当前刻意不加入重排序模型，也不开放 Top-K；先用真实文件、真实压缩摘要、版本治理和可观测的 lane 状态评估召回质量。
+当前 `main` 的包版本是 `0.3.5`：它包含可治理双资料库、启动可靠性修复，以及
+pnpm 11 的无安装脚本装配修复。当前刻意不加入重排序模型，也不开放 Top-K；先用
+真实文件、真实压缩摘要、版本治理和可观测的 lane 状态评估召回质量。
 
 MIT License。
