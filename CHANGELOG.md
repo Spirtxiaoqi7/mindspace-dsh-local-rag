@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.6-rc8 - 2026-08-20
+
+- Qualified the package against DeepSeek Harness `0.1.0-rc.8` in a clean Web
+  profile together with `mindspace-dsh-session-memory`.
+- Replaced stale integrated-memory installation guidance with the RC8 package
+  boundary: Local RAG and Memory own distinct Remotes and data stores.
+
 ## 0.3.5 - 2026-08-16
 
 - Remove the nonessential package `postinstall` preflight so pnpm 11 can

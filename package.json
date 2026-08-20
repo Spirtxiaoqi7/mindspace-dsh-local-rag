@@ -1,6 +1,6 @@
 {
   "name": "mindspace-dsh-local-rag",
-  "version": "0.3.5",
+  "version": "0.3.6-rc8",
   "description": "Local, model-invoked hybrid RAG for DeepSeek Harness",
   "type": "module",
   "license": "MIT",
@@ -66,11 +66,11 @@
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",
-    "@deepseek-ai/dsh-home-paths": "*",
-    "@deepseek-ai/dsh-session": "*",
-    "@deepseek-ai/dsh-system-prompt": "*",
-    "@deepseek-ai/dsh-tools": "*",
-    "@deepseek-ai/dsh-typert-protocol": "*"
+    "@deepseek-ai/dsh-home-paths": ">=0.1.0-rc.8 <0.2.0",
+    "@deepseek-ai/dsh-session": ">=0.1.0-rc.8 <0.2.0",
+    "@deepseek-ai/dsh-system-prompt": ">=0.1.0-rc.8 <0.2.0",
+    "@deepseek-ai/dsh-tools": ">=0.1.0-rc.8 <0.2.0",
+    "@deepseek-ai/dsh-typert-protocol": ">=0.1.0-rc.8 <0.2.0"
   },
   "peerDependenciesMeta": {
     "@deepseek-ai/cordis": {
