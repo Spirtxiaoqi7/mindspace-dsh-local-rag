@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.7 - 2026-08-22
+
+- Qualified the independent Local RAG bundle against DeepSeek Harness
+  `0.1.1-rc.2` and the stable `0.1.1` line.
+- Raised the DSH peer-dependency floor and removed the obsolete RC8 suffix;
+  the Remote, tool, local corpora, and native runtime ownership remain unchanged.
+- Revalidated the package together with DSH-memory `0.2.35` in the current Web
+  profile without duplicate services or Remote namespaces.
+
 ## 0.3.6-rc8 - 2026-08-20
 
 - Qualified the package against DeepSeek Harness `0.1.0-rc.8` in a clean Web

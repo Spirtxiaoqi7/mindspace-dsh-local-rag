@@ -25,12 +25,12 @@ This repository is **not coupled to** [`mindspace-dsh-session-memory`](https://g
 | Persistence | `<DSH_HOME>/mindspace-local-rag/` | Its own independent data store |
 | Dependency | Does not depend on structured memory | Does not depend on Local RAG |
 
-Local RAG can be installed or removed independently. On the RC8 compatibility
-line it composes with `mindspace-dsh-session-memory`: the two packages use
+Local RAG can be installed or removed independently. On the DSH `0.1.1`
+compatibility line it composes with `mindspace-dsh-session-memory`: the two packages use
 different Remote namespaces and do not share a service or data directory.
 Conversation summaries in this RAG come directly from native DSH compaction
 events; they are not read from the structured-memory plugin. Do not mix this
-RC8 package pair with a legacy in-tree Mindspace memory checkout, because that
+package pair with a legacy in-tree Mindspace memory checkout, because that
 old integration owns a competing Memory service.
 
 ## What it contributes
@@ -126,8 +126,9 @@ The suite covers real PDF/DOCX parsing, TSV provenance, deterministic RRF, scope
 
 ## Status
 
-Current `main` has package version `0.3.6-rc8`: it is qualified against DeepSeek
-Harness `0.1.0-rc.8` in a clean profile alongside the matching Memory plugin. It
+Current `main` has package version `0.3.7`: it is qualified against DeepSeek
+Harness `0.1.1-rc.2` and the stable `0.1.1` line in a clean profile alongside
+DSH-memory `0.2.35`. It
 includes governed dual corpora,
 startup reliability fixes, and the pnpm 11 no-install-script packaging repair. It
 intentionally avoids reranking and user-configurable Top-K until retrieval quality
