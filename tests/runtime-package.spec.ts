@@ -19,4 +19,15 @@ describe('runtime package gate', () => {
     expect(verifier).toContain("'pdfjs-dist/legacy/build/pdf.mjs'")
     expect(verifier).toContain("'mammoth'")
   })
+
+  it('pins the DSH 0.1.1 compatibility floor', () => {
+    const manifest = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8')) as {
+      version: string
+      peerDependencies: Record<string, string>
+    }
+    expect(manifest.version).toBe('0.3.7')
+    for (const [name, range] of Object.entries(manifest.peerDependencies)) {
+      if (name.startsWith('@deepseek-ai/dsh-')) expect(range).toBe('>=0.1.1-rc.2 <0.2.0')
+    }
+  })
 })

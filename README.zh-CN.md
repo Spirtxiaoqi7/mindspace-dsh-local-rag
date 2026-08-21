@@ -25,10 +25,10 @@
 | 数据目录 | `<DSH_HOME>/mindspace-local-rag/` | 结构化记忆插件自己的存储目录 |
 | 依赖关系 | 不依赖结构化记忆插件 | 不依赖本 RAG 插件 |
 
-RAG 可以独立安装和卸载。在 RC8 兼容线中，它可与
+RAG 可以独立安装和卸载。在 DSH `0.1.1` 兼容线中，它可与
 `mindspace-dsh-session-memory` 同时组合：两者使用不同的 Remote 命名空间，
 不共用服务或数据目录。RAG 中的会话摘要来自 DSH 原生压缩事件，不读取结构化
-记忆插件的数据。不要将这对 RC8 插件与旧的内嵌 Mindspace Memory checkout 混装，
+记忆插件的数据。不要将这对插件与旧的内嵌 Mindspace Memory checkout 混装，
 旧集成会拥有竞争性的 Memory 服务。
 
 ## 本次贡献
